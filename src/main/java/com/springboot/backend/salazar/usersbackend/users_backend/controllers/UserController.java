@@ -1,12 +1,15 @@
 package com.springboot.backend.salazar.usersbackend.users_backend.controllers;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
 import com.springboot.backend.salazar.usersbackend.users_backend.services.UserService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PutMapping;
 
 
@@ -25,7 +31,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 // it works with DTO'S
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
-@RequestMapping("/apiV1/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     @Autowired
@@ -55,13 +61,22 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody User user){
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result){
+
+        if (result.hasErrors()) {
+            return validation(result);
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUserById(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<?> updateUserById(@PathVariable Long id, @Valid @RequestBody User user, BindingResult result) {
         
+        if (result.hasErrors()) {
+            return validation(result);
+        }
+
         Optional<User> userOptional = service.findById(id);
 
         if (userOptional.isPresent()){
@@ -80,6 +95,15 @@ public class UserController {
                 Collections.singletonMap(
                     "error", "The user you want to update could'nt be found with the id: " + id));
         }
+    }
+
+
+    private ResponseEntity<?> validation(BindingResult result) {
+        Map<String, String> errors = new HashMap<>();
+        result.getFieldErrors().forEach(error -> {
+            errors.put(error.getField(), "Invalid field " + error.getField() + " " + error.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errors);
     }
 
     @DeleteMapping("/{id}")
