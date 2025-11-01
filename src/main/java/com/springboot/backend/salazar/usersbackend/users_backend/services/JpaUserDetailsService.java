@@ -43,7 +43,5 @@ public class JpaUserDetailsService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(username, user.getPassword(), 
         true, true, true, true, authorities);
-
     }
-
 }
