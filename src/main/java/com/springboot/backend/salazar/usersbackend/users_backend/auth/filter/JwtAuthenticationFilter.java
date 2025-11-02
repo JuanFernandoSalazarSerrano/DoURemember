@@ -60,6 +60,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     username, password);
             
+                    // this authenticate calls the service
             return this.authenticationManager.authenticate(authenticationToken);
 
 
@@ -103,7 +104,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Map<String, String> body = new HashMap<>();
         body.put("token", jwt);
         body.put("username", username);
-        body.put("message", String.format("Hola has iniciado session", username));
+        body.put("message", String.format("Hi you logged in", username));
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(body)); // convierte de string a json y se le pasa al body 
         response.setContentType(CONTENT_TYPE);
@@ -113,7 +114,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException failed) throws IOException, ServletException {
-        // TODO Auto-generated method stub
-        super.unsuccessfulAuthentication(request, response, failed);
+
+                Map<String, String> body = new HashMap<>();
+                body.put("Message", "Auth error with username or password");
+                body.put("error", failed.getMessage());
+
+                response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+                response.setContentType(CONTENT_TYPE);
+                response.setStatus(401);
     }
 }
