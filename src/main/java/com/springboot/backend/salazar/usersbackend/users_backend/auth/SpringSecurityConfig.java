@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.springboot.backend.salazar.usersbackend.users_backend.auth.filter.JwtAuthenticationFilter;
+
 
 @Configuration
 public class SpringSecurityConfig {
@@ -19,8 +21,9 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/users/{id}").hasRole("ADMIN")
-                .anyRequest().authenticated()
-        ).csrf(config -> config.disable())
+                .anyRequest().authenticated())
+        .addFilter(new JwtAuthenticationFilter(null))
+        .csrf(config -> config.disable())
         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .build();
     }
