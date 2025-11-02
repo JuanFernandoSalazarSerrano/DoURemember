@@ -44,18 +44,19 @@ public class User {
     @NotEmpty
     private String password;
 
-    @JsonIgnoreProperties({"handler, hibernateLazyInitializer"})
+    @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "user_roles",
+        name = "users_roles",
         joinColumns = {@JoinColumn(name ="user_id")},
         inverseJoinColumns = @JoinColumn(name="role_id"),
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id, role_id"})}
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})}
     )
+
     private List<Role> roles;
 
 
-    public User(List<Role> roles) {
+    public User() {
         this.roles = new ArrayList<>();
     }
 
