@@ -44,7 +44,6 @@ public class jwtValidationFilter extends BasicAuthenticationFilter{
                     return;
                 }
 
-
                 String token = header.replace(PREFIX_TOKEN, "");
                 // flujo validacion token
 
@@ -68,7 +67,7 @@ public class jwtValidationFilter extends BasicAuthenticationFilter{
                     SimpleGrantedAuthority[].class));
 
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    username, roles);
+                    username, null, roles);
 
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     chain.doFilter(request, response);
