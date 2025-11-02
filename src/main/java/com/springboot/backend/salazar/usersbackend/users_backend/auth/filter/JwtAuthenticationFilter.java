@@ -64,7 +64,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             return this.authenticationManager.authenticate(authenticationToken);
 
 
-
         }
 
     @Override
