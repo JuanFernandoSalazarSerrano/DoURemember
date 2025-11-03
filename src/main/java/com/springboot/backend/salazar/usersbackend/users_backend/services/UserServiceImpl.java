@@ -5,14 +5,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
+import com.springboot.backend.salazar.usersbackend.users_backend.models.UserRequest;
 import com.springboot.backend.salazar.usersbackend.users_backend.repositories.UserRepository;
 
 @Service
@@ -61,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Optional<User> update(User user, Long id) {
+    public Optional<User> update(UserRequest user, Long id) {
 
         Optional<User> userOptional = repository.findById(id);
 

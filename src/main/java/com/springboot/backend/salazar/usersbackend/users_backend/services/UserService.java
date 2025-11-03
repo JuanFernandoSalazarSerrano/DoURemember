@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
+import com.springboot.backend.salazar.usersbackend.users_backend.models.UserRequest;
 
 public interface UserService {
 
@@ -21,7 +22,7 @@ public interface UserService {
 
     Page<User> findAll(Pageable pageable);
 
-    Optional<User> update(User user, Long id);
+    Optional<User> update(UserRequest user, Long id);
 
 
 }
