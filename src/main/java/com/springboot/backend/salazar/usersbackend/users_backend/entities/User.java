@@ -9,12 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.springboot.backend.salazar.usersbackend.users_backend.models.Iuser;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -22,7 +25,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Iuser {
     
     @Id
     @GeneratedValue(strategy = IDENTITY) //autoincrement
@@ -41,6 +44,10 @@ public class User {
     @NotEmpty
     private String username;
 
+    @Transient // trasient means its not part of the persistence only class, not database column!!
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // when we send in the json this value with true or false, this allows us to poblate with the user request
+    private boolean admin;
+
     @NotEmpty
     private String password;
 
@@ -54,6 +61,14 @@ public class User {
     )
 
     private List<Role> roles;
+
+        public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
 
     public User() {
