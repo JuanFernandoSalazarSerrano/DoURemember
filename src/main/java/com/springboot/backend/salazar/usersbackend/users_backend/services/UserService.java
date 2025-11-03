@@ -21,5 +21,7 @@ public interface UserService {
 
     Page<User> findAll(Pageable pageable);
 
+    Optional<User> update(User user, Long id);
+
 
 }

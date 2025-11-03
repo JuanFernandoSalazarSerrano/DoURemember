@@ -79,23 +79,17 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUserById(@PathVariable Long id, @Valid @RequestBody User user, BindingResult result) {
+    public ResponseEntity<?> updateUserById(@PathVariable Long id, @Valid @RequestBody User user, BindingResult result){
         
         if (result.hasErrors()) {
             return validation(result);
         }
 
-        Optional<User> userOptional = service.findById(id);
+        Optional<User> userOptional = service.update(user, id);
 
         if (userOptional.isPresent()){
-            User userDb = userOptional.orElseThrow();
-            userDb.setEmail(user.getEmail());
-            userDb.setLastname(user.getLastname());
-            userDb.setName(user.getName());
-            userDb.setPassword(user.getPassword());
-            userDb.setUsername(user.getUsername());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(service.save(userDb));
+            return ResponseEntity.ok(userOptional.orElseThrow());
 
         }
         else{
