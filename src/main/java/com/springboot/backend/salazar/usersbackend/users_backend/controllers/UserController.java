@@ -22,13 +22,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.backend.salazar.usersbackend.users_backend.entities.MemoryRecall;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
 import com.springboot.backend.salazar.usersbackend.users_backend.models.UserRequest;
+import com.springboot.backend.salazar.usersbackend.users_backend.repositories.MemoryRecallRepository;
+import com.springboot.backend.salazar.usersbackend.users_backend.repositories.UserRepository;
 import com.springboot.backend.salazar.usersbackend.users_backend.services.UserService;
 
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 // the user interacts with the controller and this one comunicates with the service
@@ -41,6 +45,8 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    @Autowired
+    private MemoryRecallRepository memoryRecallRepository;
 
     @GetMapping
     public List<User> listAllUsers(){
@@ -52,6 +58,12 @@ public class UserController {
         Pageable pageable = PageRequest.of(page, 3);
         return service.findAll(pageable);
     }
+
+    @GetMapping("/getAllUserMemoryRecalls/{id}")
+    public List<MemoryRecall> getAllUserMemoryRecalls(@PathVariable Long id) {
+        return memoryRecallRepository.findAllByUserId(id);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findUserById(@PathVariable Long id) {

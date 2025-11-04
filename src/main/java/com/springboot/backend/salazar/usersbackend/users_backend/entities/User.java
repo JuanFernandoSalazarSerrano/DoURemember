@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
@@ -65,6 +66,10 @@ public class User implements Iuser {
         public boolean isAdmin() {
         return admin;
     }
+
+    @OneToMany(mappedBy = "user")
+    private List<MemoryRecall> memoryRecalls;
+
 
     public void setAdmin(boolean admin) {
         this.admin = admin;

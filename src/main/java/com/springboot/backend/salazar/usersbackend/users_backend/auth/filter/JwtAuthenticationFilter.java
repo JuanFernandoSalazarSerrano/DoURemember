@@ -87,8 +87,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         .add("isAdmin", isAdmin)
         .build();
 
-
-
         // generate token but key is in config
         String jwt = Jwts.builder()
         .subject(username)
