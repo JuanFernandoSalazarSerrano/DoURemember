@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
+import com.springboot.backend.salazar.usersbackend.users_backend.services.CustomUserDetails;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -69,10 +70,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
         
-        org.springframework.security.core.userdetails.User user =
-        (org.springframework.security.core.userdetails.User) authResult.getPrincipal(); 
+        CustomUserDetails user =
+        (CustomUserDetails) authResult.getPrincipal(); 
 
         String username = user.getUsername();
+        Long id = user.getId();
 
         // Adding roles
 
@@ -85,6 +87,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         .add("authorities", new ObjectMapper().writeValueAsString(roles))
         .add("username", username)
         .add("isAdmin", isAdmin)
+        .add("id", id)
         .build();
 
         // generate token but key is in config

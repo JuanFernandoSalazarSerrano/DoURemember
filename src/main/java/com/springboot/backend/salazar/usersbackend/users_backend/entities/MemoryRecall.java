@@ -17,7 +17,7 @@ public class MemoryRecall {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "memoryrecallid")
-    private Long id;
+    private Long memoryrecallid;
 
     @Column(name = "type", length = 200)
     private String type;
@@ -50,16 +50,16 @@ public class MemoryRecall {
         this.user = user;
     }
 
+    public Long getMemoryrecallid() {
+        return memoryrecallid;
+    }
+
+    public void setMemoryrecallid(Long memoryrecallid) {
+        this.memoryrecallid = memoryrecallid;
+    }
+
     public MemoryRecall() {
         // Default constructor required by JPA
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getType() {

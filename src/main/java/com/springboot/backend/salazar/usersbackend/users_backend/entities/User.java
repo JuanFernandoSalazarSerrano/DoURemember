@@ -24,6 +24,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
+// security concern if i add 
+
 @Entity
 @Table(name = "users")
 public class User implements Iuser {
@@ -37,6 +39,15 @@ public class User implements Iuser {
 
     @NotEmpty
     private String lastname;
+
+    @NotEmpty
+    private String profilepicture;
+
+    @NotEmpty
+    private String condition;
+
+    @NotEmpty
+    private String carer;
 
     @NotEmpty
     @Email
@@ -130,5 +141,34 @@ public class User implements Iuser {
         this.roles = roles;
     }
 
+
+        public String getProfilepicture() {
+        return profilepicture;
+    }
+
+
+    public void setProfilepicture(String profilepicture) {
+        this.profilepicture = profilepicture;
+    }
+
+
+    public String getCondition() {
+        return condition;
+    }
+
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+
+    public String getCarer() {
+        return carer;
+    }
+
+
+    public void setCarer(String carer) {
+        this.carer = carer;
+    }
     
 }
