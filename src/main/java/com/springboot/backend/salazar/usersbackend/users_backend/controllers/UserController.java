@@ -26,13 +26,11 @@ import com.springboot.backend.salazar.usersbackend.users_backend.entities.Memory
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
 import com.springboot.backend.salazar.usersbackend.users_backend.models.UserRequest;
 import com.springboot.backend.salazar.usersbackend.users_backend.repositories.MemoryRecallRepository;
-import com.springboot.backend.salazar.usersbackend.users_backend.repositories.UserRepository;
 import com.springboot.backend.salazar.usersbackend.users_backend.services.UserService;
 
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 // the user interacts with the controller and this one comunicates with the service
@@ -64,6 +62,16 @@ public class UserController {
         return memoryRecallRepository.findAllByUserId(id);
     }
 
+    @PostMapping
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result){
+
+        if (result.hasErrors()) {
+            return validation(result);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findUserById(@PathVariable Long id) {
@@ -81,14 +89,14 @@ public class UserController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult result){
+    @PostMapping("/createMemoryRecall")
+    public ResponseEntity<?> createMemoryRecall(@Valid @RequestBody MemoryRecall memory, BindingResult result){
 
         if (result.hasErrors()) {
             return validation(result);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(memoryRecallRepository.save(memory));
     }
 
     @PutMapping("/{id}")

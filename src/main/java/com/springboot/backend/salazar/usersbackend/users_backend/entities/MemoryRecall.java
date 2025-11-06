@@ -35,7 +35,7 @@ public class MemoryRecall {
     private String groundtruthfacts;
 
     @Column(name = "keyentities", length = 45)
-    private String keyEntities;
+    private String keyentities;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -102,12 +102,12 @@ public class MemoryRecall {
         this.groundtruthfacts = groundtruthfacts;
     }
 
-    public String getKeyEntities() {
-        return keyEntities;
+    public String getkeyentities() {
+        return keyentities;
     }
 
-    public void setKeyEntities(String keyEntities) {
-        this.keyEntities = keyEntities;
+    public void setkeyentities(String keyentities) {
+        this.keyentities = keyentities;
     }
 
     
