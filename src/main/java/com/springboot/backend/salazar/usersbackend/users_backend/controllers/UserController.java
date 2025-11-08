@@ -26,6 +26,7 @@ import com.springboot.backend.salazar.usersbackend.users_backend.entities.Memory
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
 import com.springboot.backend.salazar.usersbackend.users_backend.models.UserRequest;
 import com.springboot.backend.salazar.usersbackend.users_backend.repositories.MemoryRecallRepository;
+import com.springboot.backend.salazar.usersbackend.users_backend.repositories.UserRepository;
 import com.springboot.backend.salazar.usersbackend.users_backend.services.UserService;
 
 import jakarta.validation.Valid;
@@ -40,11 +41,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
+    private final UserRepository userRepository;
+
     @Autowired
     private UserService service;
 
     @Autowired
     private MemoryRecallRepository memoryRecallRepository;
+
+    UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping
     public List<User> listAllUsers(){
@@ -60,6 +67,17 @@ public class UserController {
     @GetMapping("/getAllUserMemoryRecalls/{id}")
     public List<MemoryRecall> getAllUserMemoryRecalls(@PathVariable Long id) {
         return memoryRecallRepository.findAllByUserId(id);
+    }
+
+    @GetMapping("/getAllDoctorPatients/{id}")
+    public List<User> getAllDoctorPatients(@PathVariable Long id) {
+        return userRepository.findAllByDoctor_Id(id);
+    }
+
+    @DeleteMapping("/deleteMemoryRecall/{memoryRecallId}")
+    public ResponseEntity<?> deleteMemoryRecallById(@PathVariable Long memoryRecallId){
+        memoryRecallRepository.deleteById(memoryRecallId);
+        return ResponseEntity.status(HttpStatus.OK).body(memoryRecallId);
     }
 
     @PostMapping

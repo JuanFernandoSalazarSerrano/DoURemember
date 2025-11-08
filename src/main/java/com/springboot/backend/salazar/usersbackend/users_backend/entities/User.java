@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -56,6 +57,11 @@ public class User implements Iuser {
     @NotEmpty
     private String username;
 
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+
+
     @Transient // trasient means its not part of the persistence only class, not database column!!
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // when we send in the json this value with true or false, this allows us to poblate with the user request
     private boolean admin;
@@ -82,10 +88,10 @@ public class User implements Iuser {
     private List<MemoryRecall> memoryRecalls;
 
 
+
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
-
 
     public User() {
         this.roles = new ArrayList<>();
@@ -96,6 +102,14 @@ public class User implements Iuser {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public String getName() {

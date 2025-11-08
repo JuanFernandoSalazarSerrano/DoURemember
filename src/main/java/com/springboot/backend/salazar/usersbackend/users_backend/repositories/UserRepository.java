@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
-import com.springboot.backend.salazar.usersbackend.users_backend.entities.MemoryRecall;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
 
 
@@ -17,5 +16,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
+    List<User> findAllByDoctor_Id(Long doctorId);
 
 }
