@@ -42,9 +42,12 @@ public class SpringSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http.authorizeHttpRequests( authz ->
+
          authz.requestMatchers(HttpMethod.GET, "/api/v1/users", "/api/v1/users/page/{page}"
-                ).permitAll().requestMatchers(HttpMethod.POST, "/api/v1/users").hasRole("USER")
-                .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}").hasAnyRole("USER", "ADMIN")
+                ).permitAll()
+                .requestMatchers("/api/v1/groundtruth/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/users").hasRole("USER")
+                .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}").hasRole("USER")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}").hasRole("USER")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/users/{id}").hasRole("USER")
                 .anyRequest().authenticated())

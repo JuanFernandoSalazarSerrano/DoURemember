@@ -36,7 +36,20 @@ public class jwtValidationFilter extends BasicAuthenticationFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-                String header = request.getHeader(HEADER_AUTHORIZATION);
+
+                    String path = request.getRequestURI();
+
+                    if (path.startsWith("/api/v1/groundtruth")) {
+                        chain.doFilter(request, response);
+                        return;
+                    }
+
+                    String header = request.getHeader(HEADER_AUTHORIZATION);
+                    if (header == null || !header.startsWith(PREFIX_TOKEN)) {
+                        chain.doFilter(request, response);
+                        return;
+                    }
+
                 
                 if(header == null || !header.startsWith(PREFIX_TOKEN)){
                     chain.doFilter(request, response);

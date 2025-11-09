@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 
+import com.springboot.backend.salazar.usersbackend.users_backend.entities.GroundTruthResponse;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
 import com.springboot.backend.salazar.usersbackend.users_backend.models.UserRequest;
 
@@ -21,6 +22,10 @@ public interface UserService {
     void deleteById(@NonNull Long id);
 
     Page<User> findAll(Pageable pageable);
+
+    Page<GroundTruthResponse> findAllByUserId(Long id, Pageable pageable);
+
+    List<GroundTruthResponse> findAllSessionsByUserId(Long userId);
 
     Optional<User> update(UserRequest user, Long id);
 

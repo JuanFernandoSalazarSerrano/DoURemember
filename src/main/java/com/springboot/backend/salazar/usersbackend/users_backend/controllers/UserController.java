@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.backend.salazar.usersbackend.users_backend.entities.GroundTruthResponse;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.MemoryRecall;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
 import com.springboot.backend.salazar.usersbackend.users_backend.models.UserRequest;
@@ -32,6 +33,8 @@ import com.springboot.backend.salazar.usersbackend.users_backend.services.UserSe
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 // the user interacts with the controller and this one comunicates with the service
@@ -58,10 +61,22 @@ public class UserController {
         return service.findAll();
     }
 
+    @GetMapping("/getAllUserSessionsById/{id}")
+    public List<GroundTruthResponse> getAllUserSessionsById(@PathVariable Long id) {
+        return service.findAllSessionsByUserId(id);
+    }
+
     @GetMapping("/page/{page}")
     public Page<User> listPageable(@PathVariable Integer page){
         Pageable pageable = PageRequest.of(page, 3);
         return service.findAll(pageable);
+    }
+
+    @GetMapping("/findAllByUserId/{id}/sessions/{page}")
+    public Page<GroundTruthResponse> findAllByUserId(@PathVariable Long id, @PathVariable Integer page){
+        
+        Pageable pageable = PageRequest.of(page, 4);
+        return service.findAllByUserId(id, pageable);
     }
 
     @GetMapping("/getAllUserMemoryRecalls/{id}")

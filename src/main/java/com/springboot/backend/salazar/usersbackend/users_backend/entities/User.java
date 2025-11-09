@@ -87,6 +87,9 @@ public class User implements Iuser {
     @OneToMany(mappedBy = "user")
     private List<MemoryRecall> memoryRecalls;
 
+    @OneToMany(mappedBy = "usergroundTruthResponse")
+    private List<GroundTruthResponse> groundTruthResponses;
+
 
 
     public void setAdmin(boolean admin) {

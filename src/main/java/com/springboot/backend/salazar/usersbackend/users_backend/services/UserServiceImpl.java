@@ -11,10 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.springboot.backend.salazar.usersbackend.users_backend.entities.GroundTruthResponse;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.Role;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
 import com.springboot.backend.salazar.usersbackend.users_backend.models.Iuser;
 import com.springboot.backend.salazar.usersbackend.users_backend.models.UserRequest;
+import com.springboot.backend.salazar.usersbackend.users_backend.repositories.GroundTruthRepository;
 import com.springboot.backend.salazar.usersbackend.users_backend.repositories.RoleRepository;
 import com.springboot.backend.salazar.usersbackend.users_backend.repositories.UserRepository;
 
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private GroundTruthRepository groundTruthRepository;
 
     private UserRepository repository;
 
@@ -80,6 +85,16 @@ public class UserServiceImpl implements UserService {
         return this.repository.findAll(pageable);
     }
 
+    @Override
+    public Page<GroundTruthResponse> findAllByUserId(Long id, Pageable pageable) {
+        return this.groundTruthRepository.findAllByUsergroundTruthResponse_Id(id, pageable);
+    }
+
+    @Override
+    public List<GroundTruthResponse> findAllSessionsByUserId(Long id){
+        return this.groundTruthRepository.findAllByUsergroundTruthResponse_Id(id);
+    }
+
     @Transactional
     @Override
     public Optional<User> update(UserRequest user, Long id) {
@@ -116,6 +131,10 @@ public class UserServiceImpl implements UserService {
         }
         return roles;
     }
+
+
+
+
 
     
 }
