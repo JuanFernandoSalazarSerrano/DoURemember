@@ -14,4 +14,5 @@ public interface GroundTruthRepository extends CrudRepository<GroundTruthRespons
     Page<GroundTruthResponse> findAllByUsergroundTruthResponse_Id(Long userId, Pageable pageable);
 
     List<GroundTruthResponse> findAllByUsergroundTruthResponse_Id(Long userId);
+    
 }

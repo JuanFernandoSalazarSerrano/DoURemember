@@ -25,15 +25,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.GroundTruthResponse;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.MemoryRecall;
 import com.springboot.backend.salazar.usersbackend.users_backend.entities.User;
+import com.springboot.backend.salazar.usersbackend.users_backend.entities.Doctor;
 import com.springboot.backend.salazar.usersbackend.users_backend.models.UserRequest;
 import com.springboot.backend.salazar.usersbackend.users_backend.repositories.MemoryRecallRepository;
+import com.springboot.backend.salazar.usersbackend.users_backend.repositories.RoleRepository;
 import com.springboot.backend.salazar.usersbackend.users_backend.repositories.UserRepository;
+import com.springboot.backend.salazar.usersbackend.users_backend.repositories.DoctorRepository;
 import com.springboot.backend.salazar.usersbackend.users_backend.services.UserService;
 
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -51,6 +53,12 @@ public class UserController {
 
     @Autowired
     private MemoryRecallRepository memoryRecallRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -130,6 +138,38 @@ public class UserController {
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(memoryRecallRepository.save(memory));
+    }
+
+    @PostMapping("/createDoctor")
+    public ResponseEntity<?> createDoctor(){
+        Long lastUser = userRepository.findLastUserId();
+        Optional<User> userOptional = service.findById(lastUser);
+        Optional<com.springboot.backend.salazar.usersbackend.users_backend.entities.Role> roleOptional = roleRepository.findById(2L);
+
+        if (userOptional.isPresent() && roleOptional.isPresent()) {
+            User user = userOptional.get();
+            com.springboot.backend.salazar.usersbackend.users_backend.entities.Role role = roleOptional.get();
+            user.setRoles(new java.util.ArrayList<>(List.of(role)));
+            user.getRoles().add(role);
+            service.saveAdmin(user);
+            
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "Doctor role assigned successfully to user 28"));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                Collections.singletonMap("error", "User or Role not found"));
+        }
+    }
+
+    @PostMapping("/createNewDoctor")
+    public ResponseEntity<?> createNewDoctor(@Valid @RequestBody Doctor doctor, BindingResult result){
+
+        if (result.hasErrors()) {
+            return validation(result);
+        }
+
+        Doctor savedDoctor = doctorRepository.save(doctor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedDoctor);
     }
 
     @PutMapping("/{id}")

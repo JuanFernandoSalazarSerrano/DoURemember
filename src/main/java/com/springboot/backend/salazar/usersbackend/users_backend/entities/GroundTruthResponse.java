@@ -50,6 +50,14 @@ public class GroundTruthResponse {
 
     // Getters & Setters
 
+    public User getUsergroundTruthResponse() {
+        return usergroundTruthResponse;
+    }
+
+    public void setUsergroundTruthResponse(User usergroundTruthResponse) {
+        this.usergroundTruthResponse = usergroundTruthResponse;
+    }
+
     public Long getId() {
         return id;
     }

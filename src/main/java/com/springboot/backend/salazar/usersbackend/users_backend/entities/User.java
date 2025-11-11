@@ -45,7 +45,7 @@ public class User implements Iuser {
     private String profilepicture;
 
     @NotEmpty
-    private String condition;
+    private String medical_condition;
 
     @NotEmpty
     private String carer;
@@ -169,15 +169,13 @@ public class User implements Iuser {
     }
 
 
-    public String getCondition() {
-        return condition;
+    public String getMedical_condition() {
+        return medical_condition;
     }
 
-
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setMedical_condition(String medical_condition) {
+        this.medical_condition = medical_condition;
     }
-
 
     public String getCarer() {
         return carer;

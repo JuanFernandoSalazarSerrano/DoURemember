@@ -53,6 +53,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional()
+    public User saveAdmin(@NonNull User user) {
+
+        List<Role> roles = new ArrayList<>();
+
+
+        Optional<Role> optionalRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
+        optionalRoleAdmin.ifPresent(roles::add);
+
+        user.setRoles(roles);
+        
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return repository.save(user);
+    }
+
+
+        @Override
+    @Transactional()
     public User save(@NonNull User user) {
 
         List<Role> roles = new ArrayList<>();
@@ -72,6 +89,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return repository.save(user);
     }
+
 
     @Override
     @Transactional()
@@ -129,6 +147,39 @@ public class UserServiceImpl implements UserService {
             Optional<Role> optionalRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
             optionalRoleAdmin.ifPresent(roles::add);
         }
+        return roles;
+    }
+
+
+    @Transactional
+    @Override
+    public Optional<User> updateAdmin(UserRequest user, Long id) {
+
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()){
+            User userDb = userOptional.orElseThrow();
+            userDb.setEmail(user.getEmail());
+            userDb.setLastname(user.getLastname());
+            userDb.setName(user.getName());
+            userDb.setUsername(user.getUsername());
+
+            userDb.setRoles(getRolesAdmin(user));
+            return Optional.of(repository.save(userDb));
+        }
+
+        return Optional.empty();
+
+    }
+
+
+        private List<Role> getRolesAdmin(Iuser user) {
+
+        List<Role> roles = new ArrayList<>();
+
+        Optional<Role> optionalRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
+        optionalRoleAdmin.ifPresent(roles::add);
+
         return roles;
     }
 

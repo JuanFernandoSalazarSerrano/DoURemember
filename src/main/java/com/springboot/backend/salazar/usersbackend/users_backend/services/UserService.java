@@ -19,6 +19,8 @@ public interface UserService {
 
     User save(@NonNull User user);
 
+    User saveAdmin(@NonNull User user);
+
     void deleteById(@NonNull Long id);
 
     Page<User> findAll(Pageable pageable);
@@ -28,5 +30,8 @@ public interface UserService {
     List<GroundTruthResponse> findAllSessionsByUserId(Long userId);
 
     Optional<User> update(UserRequest user, Long id);
+
+    Optional<User> updateAdmin(UserRequest user, Long id);
+
 
 }
