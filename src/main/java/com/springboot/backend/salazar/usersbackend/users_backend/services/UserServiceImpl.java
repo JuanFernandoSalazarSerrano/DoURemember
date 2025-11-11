@@ -62,9 +62,11 @@ public class UserServiceImpl implements UserService {
 
         user.setRoles(roles);
         
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        System.out.println(user.getPassword());
+        // Only encode when the provided password is not already a bcrypt hash.
+        String pw = user.getPassword();
+        if (pw != null && !isBCryptHash(pw)) {
+            user.setPassword(passwordEncoder.encode(pw));
+        }
 
         return repository.save(user);
     }
@@ -89,8 +91,11 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
 
         
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        // Only encode when the provided password is not already a bcrypt hash.
+        String pw = user.getPassword();
+        if (pw != null && !isBCryptHash(pw)) {
+            user.setPassword(passwordEncoder.encode(pw));
+        }
 
         return repository.save(user);
     }
@@ -187,6 +192,15 @@ public class UserServiceImpl implements UserService {
 
         return roles;
     }
+
+        /**
+         * Heuristic to check if a value is already a bcrypt hash.
+         * Typical bcrypt hashes start with $2a$, $2b$, or $2y$ and are 60 chars long.
+         */
+        private boolean isBCryptHash(String pw) {
+            if (pw == null) return false;
+            return (pw.startsWith("$2a$") || pw.startsWith("$2b$") || pw.startsWith("$2y$")) && pw.length() == 60;
+        }
 
 
 
