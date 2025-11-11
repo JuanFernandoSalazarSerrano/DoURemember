@@ -46,10 +46,7 @@ public class SpringSecurityConfig {
          authz.requestMatchers(HttpMethod.GET, "/api/v1/users", "/api/v1/users/page/{page}"
                 ).permitAll()
                 .requestMatchers("/api/v1/groundtruth/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/users").hasRole("USER")
-                .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}").hasRole("USER")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}").hasRole("USER")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/users/{id}").hasRole("USER")
+                .requestMatchers("/api/v1/users/**").permitAll()
                 .anyRequest().authenticated())
         .cors(cors -> cors.configurationSource(configurationSource()))
         .addFilter(new JwtAuthenticationFilter(authenticationManager()))

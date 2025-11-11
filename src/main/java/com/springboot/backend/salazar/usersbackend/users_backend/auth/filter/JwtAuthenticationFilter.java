@@ -6,11 +6,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.core.exc.StreamReadException;
@@ -31,6 +33,10 @@ import static com.springboot.backend.salazar.usersbackend.users_backend.auth.Tok
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     private AuthenticationManager authenticationManager;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -48,7 +54,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 try {
                     User user = new ObjectMapper().readValue(request.getInputStream(),User.class);
                     username = user.getUsername();
-                    password = user.getPassword();                   
+                    password = user.getPassword(); 
+                    
+                    // password = passwordEncoder.encode(user.getPassword()); 
+                    
+                    System.out.println(username + " < username " + password + " < password " + " user > " + user.getPassword());
+                    
                 } catch (StreamReadException e) {
                     e.printStackTrace();
                 } catch (DatabindException e) {

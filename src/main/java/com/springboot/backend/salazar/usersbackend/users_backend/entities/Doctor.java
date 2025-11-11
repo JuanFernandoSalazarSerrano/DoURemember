@@ -31,6 +31,9 @@ public class Doctor{
     @Column(name = "isremote")
     private Boolean isremote;
 
+    @Column(name = "doctoremail", length = 45)
+    private String doctoremail;
+
     @OneToMany(mappedBy = "doctor")
     private List<User> users;
 
@@ -75,5 +78,13 @@ public class Doctor{
 
     public void setIsremote(Boolean isremote) {
         this.isremote = isremote;
+    }
+
+    public String getDoctoremail() {
+        return doctoremail;
+    }
+
+    public void setDoctoremail(String doctoremail) {
+        this.doctoremail = doctoremail;
     }
 }

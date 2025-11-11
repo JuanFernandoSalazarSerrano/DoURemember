@@ -56,14 +56,16 @@ public class UserServiceImpl implements UserService {
     public User saveAdmin(@NonNull User user) {
 
         List<Role> roles = new ArrayList<>();
-
-
         Optional<Role> optionalRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
+
         optionalRoleAdmin.ifPresent(roles::add);
 
         user.setRoles(roles);
         
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        System.out.println(user.getPassword());
+
         return repository.save(user);
     }
 
@@ -85,8 +87,11 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setRoles(roles);
+
         
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+
         return repository.save(user);
     }
 
